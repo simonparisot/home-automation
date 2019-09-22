@@ -1,0 +1,25 @@
+{
+    "directive": {
+        "header": {
+            "namespace": "Alexa.PowerController",
+            "name": "TurnOn",
+            "payloadVersion": "3",
+            "messageId": "4e021b69-686d-48dc-b850-f9cc3662e824",
+            "correlationToken": "AAAAAAAAAQAtUlwf72aBEbxsCnN/fsU2DAIAAAAAAACo8uOnw7FaTOlymAvMr4miQtkksI2D6txJynH7PvfN0pNpbDlZGu1ABeaFyzLSeGbdg4Rxerg46xST/Q5s0LAWS1Vk8/+hOdtPz/TLVy/4hQFpPJLj5T//l3h74USRITlZCvJ4nk94w4CRqsv7odSKBWT5RNlncnj8NoeIkMD6IutFEaA80K32KNPYOfjO2sUk5tvFsBjRMNb1IHsXZzEAtnT4lqBNDsACi/okv9MGpMu35ODCdETRwVaapShAwAGRof3qatWxeWr6rVrppZPp4uH69HQgIxsCfgSC365Us1uKm+MIl9NOKC6aVxLvoLYA1Ws3eOZHaGjBZ7pqfByp6fAm6o4ZQ5p6UXmaGvFr8RMigcX26au6q7m+iLZss9DZAirTWONt9Fvgc8Feyv7rRT/BKTZd5qCmQSylIz3pbQdf5e+kSK9nIPa5nsIxTED/sy3ctn3e+sLfQPv4lI6XuJLFMwXqGdzKipvqg8vV3QXzdqjkvNLicKZu0q8IRBLc6mHhNjswUxVpg0dFNlZNrfascsoro0ExfP8Qm23M38iUwdhRTS/e5DdDFvbJ8eO3PNKxI98l3hk5Hgoe6ei50yFke6g5HNRSZSV4tmQ0o89l8borPqMzg1qXZtkSYcQB56sb4Fwe+uaXWGuBDmPoEq6qldb7L/XqsiOpQFFNlpjhgoQlH8cPRJwKiw=="
+        },
+        "endpoint": {
+            "scope": {
+                "type": "BearerToken",
+                "token": "Atza|IwEBIJxQvyyxzY9s1JF79hnbZRFHHuL6pENOGqWjbnCAxOzHL_qwIygDUBqXqGcf1FcoHddGd6eZPAnnekradGQvfHZrbkXC_Vrvcj6_TQRUa3NuqvuWpYCm2Llnbwn9MKM3g2lJAe-tADUGt1vawiHg8xuwWrK2AoVrrvdhc--ZRu_NfjXCikGSYRETgdkeZjx6Ib4bo4-GJwrCcLzcnZHDJGulebWPnWjaafW7owNNXwTxLqZjAaA2AwJbus7-yDMWgV8Pt_CivarxooNbsVjZkmktmHOXEW4YyX_MYhksCCiCy8kRIGF1TczedJw0QmdTzphWi5KT4yzBq-plFYvluJjumOOR8Kif0Ap0whyrU7ECQVy3eQMFKZwtnjOMcV7tOC4GeHRxqZNazs3a2tLRKT58mLkn1ARHrjVH9zcIMh4UhKXIGfvWw0qDj4Hq9I7sv9utAxcLwoehoxEIy_ZoJZ9oSLEfxkdKk3MLENEqkjsZ9gpljsPfhmn42csKfRw2zGNxIHNw4jJ5lfjEzv15riIY"
+            },
+            "endpointId": "light-001",
+            "cookie": {
+                "key1": "arbitrary key/value pairs for skill to reference this endpoint.",
+                "key2": "There can be multiple entries",
+                "key3": "but they should only be used for reference purposes.",
+                "key4": "This is not a suitable place to maintain current endpoint state."
+            }
+        },
+        "payload": {}
+    }
+}

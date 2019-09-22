@@ -1,0 +1,14 @@
+{
+  "name": "myhomelights",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "simon",
+  "license": "ISC",
+  "dependencies": {
+    "mqtt": "^2.18.3"
+  }
+}

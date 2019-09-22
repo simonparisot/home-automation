@@ -1,0 +1,45 @@
+body { 
+    font-family: "open-sans", sans-serif;
+    background-color: #f5F5F5;
+    color: #333;
+    text-align: center;
+}
+
+#logo { 
+    height: 150px;
+    margin-top: 30px; 
+}
+
+.light-box {
+    background-color: #fff;
+    box-shadow: 1px 3px #ccc;
+    border-radius: 20px;
+    width: 40%;
+    margin: 50px 2%;
+    padding: 50px 10px;
+    cursor: pointer;
+    text-align: left;
+    display: inline-block;
+}
+
+.light-off { 
+    background-color: #000;
+    color: #fff;
+}
+
+.light-box img { 
+    float: left;
+    height: 50px;
+    margin: 0 30px;
+    vertical-align: middle;
+}
+
+.light-box:active img { 
+    filter: blur(8px);
+}
+
+.light-box h2 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
