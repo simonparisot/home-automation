@@ -6,7 +6,7 @@ tout un tas de chose pour automatiser la maison :)
 
 Un bot Alexa (sur Lambda) pour consulter mon compte Boursorama
 
-##Home Lights
+## Home Lights
 
 Contrôle des lumière via Alexa, ESP8266 et CloudMQTT
 Contient le microcode pour ESP8266 et la fonction Lambda de contrôle.
