@@ -159,10 +159,7 @@ void reconnect() {
 // -------------------------------------------------------- SETUP FUNCTION
 void setup() {
 
-  //swap TX and RX to GPIO1 ans GPIO3
-  //pinMode(1, FUNCTION_3); 
-  //pinMode(3, FUNCTION_3); 
-  Serial.begin(115200, SERIAL_8N1, SERIAL_TX_ONLY);
+  Serial.begin(74880);
 
   // Initialise the input for physical switch
   pinMode(switch1, INPUT_PULLUP); switchState1 = digitalRead(switch1);
