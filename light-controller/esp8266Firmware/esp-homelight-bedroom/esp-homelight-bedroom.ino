@@ -7,12 +7,12 @@
 #include <PubSubClient.h>
 
 // Configuration
-const char* ssid = "PrettyFlyForAWifi";                         // wifi configuration
-const char* password = "123tagada";            
+const char* ssid = "{{HOME_WIFI_SSID}}";                // wifi configuration
+const char* password = "{{HOME_WIFI_PASSWORD}}";            
 const char* mqtt_server = "m23.cloudmqtt.com";          // MQTT broker configuration
 int mqtt_port = 15067;
-const char* mqtt_user = "sqqvsrhi";
-const char* mqtt_pwd = "6mvr3arW3WJ0";
+const char* mqtt_user = "{{CLOUDMQTT_USER}}";
+const char* mqtt_pwd = "{{CLOUDMQTT_PASSWORD}}";
 const char* outTopic = "state";             
 const char* inTopic = "command";
 int relayPin = 12;                                       // pin that commands the relay

@@ -8,14 +8,14 @@
 
 // -------------------------------------------------------- CONFIGURATION
 // Wifi
-const char* ssid = "PrettyFlyForAWifi";
-const char* password = "123tagada";   
+const char* ssid = "{{HOME_WIFI_SSID}}";
+const char* password = "{{HOME_WIFI_PASSWORD}}";   
 
 // MQTT broker         
 const char* mqtt_server = "m23.cloudmqtt.com";
 const int mqtt_port = 15067;
-const char* mqtt_user = "sqqvsrhi";
-const char* mqtt_pwd = "6mvr3arW3WJ0";
+const char* mqtt_user = "{{CLOUDMQTT_USER}}";
+const char* mqtt_pwd = "{{CLOUDMQTT_PASSWORD}}";
 const char* outTopic = "state";             
 const char* inTopic = "command";
 

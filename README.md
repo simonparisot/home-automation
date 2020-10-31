@@ -1,16 +1,21 @@
-# Domotique !
+# Home automation projects!
 
-tout un tas de chose pour automatiser la maison :)
+Several projects that automate my home :D
+They all make use of ESP8266 microcontroller for the hardware and AWS IoT Core for the IoT platform (using MQTT).
+Control is done through Alexa and/or simple API calls.
 
-## AlexaBank
+## Light controller
 
-Un bot Alexa (sur Lambda) pour consulter mon compte Boursorama
+Controls the lights in the house, through Alexa or ESP8266 connected physical switches (yes a lot of home wiring has been necessary!).
 
-## Home Lights
+## Screen controller
 
-Contrôle des lumière via Alexa, ESP8266 et CloudMQTT
-Contient le microcode pour ESP8266 et la fonction Lambda de contrôle.
+Controls the home cinema electrical screen.
 
-## Papayop
+## Fish controller
 
-Application PWA pour contrôle des lumières (via CloudMQTT)
+Controls... a singing and dancing fish I used for various endeavors. 
+
+## Papayop app
+
+Web app using websockets to connect to MQTT to action some of the previous things.

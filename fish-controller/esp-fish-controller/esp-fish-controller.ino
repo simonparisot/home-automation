@@ -15,15 +15,7 @@ const char* ssid = "{{HOME_WIFI_SSID}}";
 const char* password = "{{HOME_WIFI_PASSWORD}}";
 
 // pins of the relays
-const int rollPin = 14;
-const int unrollPin = 13;
-
-// exact duration of rolling and unrolling of the screen
-const int rollDelay = 22000;
-const int unrollDelay = 19000;
-
-String state = "rolled";
-long startTimer = 0;
+const int rollPin = 13;
 
 // JSON parsing object in memory
 const size_t capacity = JSON_OBJECT_SIZE(3) + 60;
@@ -45,9 +37,7 @@ void setup() {
 
   // initialize digital pin as an output for builtin led and the 2 relays
   pinMode(rollPin, OUTPUT);
-  pinMode(unrollPin, OUTPUT);
   digitalWrite(rollPin, LOW);
-  digitalWrite(unrollPin, LOW);
 
   setup_wifi();
   client.setServer(AWS_endpoint, 8883);
@@ -116,65 +106,25 @@ void callback(char* topic, byte* payload, unsigned int length) {
   String msg = String((char *)payload);
   deserializeJson(doc, msg);
 
-  String thing_type = doc["thing_type"]; // "screen"
-  String thing_serial = doc["thing_serial"]; // "0"
-  String command = doc["command"]; // "roll"
+  String thing_type = doc["thing_type"];
+  String thing_serial = doc["thing_serial"];
+  String command = doc["command"];
 
   Serial.print("Message arrived on topic [");
   Serial.print(topic);
   Serial.println("] ");
   Serial.println(msg);
 
-  if (thing_type == "screen" && thing_serial == "0") // if this is a command for this thing
-  {
-    if (command == "unroll" && state == "rolled")
-    {
-
-      client.publish("state", "{\"thing_type\":\"screen\",\"thing_serial\":\"0\",\"response\":\"accepted\"}");
-      state = "busy";
-      digitalWrite(unrollPin, HIGH);
-      Serial.print("Screen is unrolling... ");
-
-      // wait for the screen to unroll, while maintaining the mqtt connection
-      startTimer = millis();
-      while (millis() - startTimer < unrollDelay) {
-        client.loop();
-      }
-
-      digitalWrite(unrollPin, LOW);
-      state = "unrolled";
-      Serial.println("Done.");
-
-    }
-    else if (command == "roll" && state == "unrolled")
-    {
-
-      client.publish("state", "{\"thing_type\":\"screen\",\"thing_serial\":\"0\",\"response\":\"accepted\"}");
-      state = "busy";
+  if (thing_type == "fish" && thing_serial == "0") {
+    if (command == "sing") {
+      
+      client.publish("state", "{\"thing_type\":\"fish\",\"thing_serial\":\"0\",\"response\":\"accepted\"}");
       digitalWrite(rollPin, HIGH);
-      Serial.print("Screen is rolling up... ");
-
-      // wait for the screen to roll up, while maintaining the mqtt connection
-      startTimer = millis();
-      while (millis() - startTimer < rollDelay) {
-        client.loop();
-      }
-
+      Serial.print("Fish is singing... ");
+      delay(100);
       digitalWrite(rollPin, LOW);
-      state = "rolled";
-      Serial.println("Done.");
+      
     }
-    else if (state == "busy")
-    {
-      client.publish("state", "{\"thing_type\":\"screen\",\"thing_serial\":\"0\",\"response\":\"busy\"}");
-      Serial.println("Screen is busy");
-    }
-    else
-    {
-      client.publish("state", "{\"thing_type\":\"screen\",\"thing_serial\":\"0\",\"response\":\"nothing to do\"}");
-      Serial.println("Screen is already in this state");
-    }
-    Serial.println();
   }
 }
 
@@ -218,21 +168,18 @@ void setup_wifi() {
 // Function to connect to AWS IoT MQTT
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void reconnect() {
+  ESP.wdtDisable();
   while (!client.connected()) {
-    delay(10);
     Serial.print("Attempting MQTT connection...");
-    ESP.wdtDisable();
-    if (client.connect("ESPthing")) {
-      ESP.wdtEnable(0);
+    if (client.connect("fish")) {
       Serial.println("connected");
       // Once connected, publish an announcement...
-      client.publish("state", "{\"thing_type\":\"screen\",\"thing_serial\":\"0\",\"state\":\"connected\"}");
+      client.publish("state", "{\"thing_type\":\"fish\",\"thing_serial\":\"0\",\"state\":\"connected\"}");
       // ... and resubscribe
       delay(10);
       client.subscribe("command");
       Serial.println("Waiting for messages.");
     } else {
-      ESP.wdtEnable(0);
       Serial.print("failed, rc=");
       Serial.print(client.state());
       Serial.println(" try again in 5 seconds");
@@ -244,4 +191,5 @@ void reconnect() {
       delay(5000);
     }
   }
+  ESP.wdtEnable(0);
 }

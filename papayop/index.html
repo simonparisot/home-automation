@@ -28,8 +28,8 @@
     client.onMessageArrived = onMessageArrived;
     var options = {
       useSSL: true,
-      userName: "sqqvsrhi",
-      password: "6mvr3arW3WJ0",
+      userName: "{{CLOUDMQTT_USER}}",
+      password: "{{CLOUDMQTT_PASSWORD}}",
       onSuccess:onConnect,
       onFailure:doFail
     }

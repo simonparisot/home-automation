@@ -18,7 +18,7 @@ exports.handler = function (request, context) {
         // connect to MQTT
         log("CONNECTING TO MQTT...");
         var mqtt = require('mqtt');
-        var MQTT_ADDR = "mqtt://sqqvsrhi:6mvr3arW3WJ0@m23.cloudmqtt.com:15067";
+        var MQTT_ADDR = "mqtt://{{CLOUDMQTT_USER}}:{{CLOUDMQTT_PASSWORD}}@m23.cloudmqtt.com:15067";
         var client = mqtt.connect(MQTT_ADDR,{clientId: 'awslambda', protocolId: 'MQIsdp', protocolVersion: 3, connectTimeout:1000, debug:true});
 
         // when connected
