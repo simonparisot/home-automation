@@ -11,6 +11,7 @@ To switch currents (for the screen motor) I used 2 solid state relays (Omron G3M
 All of that fitted (almost :D) perfectly in a small switch box.
 
 Activating the fish required a low current switch. I used a BC547 transistor.
+
 ![Circuit](https://imagizer.imageshack.com/v2/680x540q90/r/923/ABfV7b.png)
 
 

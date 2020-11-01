@@ -7,6 +7,7 @@ Control a singind fish with an HTTP API. Because why not!
 I used a NodeMCU ESP8266 as in the screen controller project (see there why).
 
 Activating the fish required a low current switch. I used a BC547 transistor.
+
 ![Circuit](https://imagizer.imageshack.com/v2/400x220q90/r/924/r3D0oD.png)
 
 

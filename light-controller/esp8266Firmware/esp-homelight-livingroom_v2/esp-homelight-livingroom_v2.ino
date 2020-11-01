@@ -15,7 +15,10 @@ const char* ssid = "PrettyFlyForAWifi";
 const char* password = "123tagada";
 
 // pins of the relays
-const int rollPin = 2;
+const int light0pin = 14;
+const int light1pin = 12;
+const int light2pin = 13;
+const int light3pin = 15;
 
 // JSON parsing object in memory
 const size_t capacity = JSON_OBJECT_SIZE(3) + 60;
@@ -36,8 +39,15 @@ void setup() {
   Serial.begin(115200);
 
   // initialize digital pin as an output for builtin led and the 2 relays
-  pinMode(rollPin, OUTPUT);
-  digitalWrite(rollPin, LOW);
+  pinMode(light0pin, OUTPUT);
+  pinMode(light1pin, OUTPUT);
+  pinMode(light2pin, OUTPUT);
+  pinMode(light3pin, OUTPUT);
+  
+  digitalWrite(light0pin, LOW);
+  digitalWrite(light1pin, LOW);
+  digitalWrite(light2pin, LOW);
+  digitalWrite(light3pin, LOW);
 
   setup_wifi();
   client.setServer(AWS_endpoint, 8883);
@@ -115,15 +125,30 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println("] ");
   Serial.println(msg);
 
-  if (thing_type == "fish" && thing_serial == "0") {
-    if (command == "sing") {
-
-      client.publish("state", "{\"thing_type\":\"fish\",\"thing_serial\":\"0\",\"response\":\"accepted\"}");
-      digitalWrite(rollPin, HIGH);
-      Serial.print("Fish is singing... ");
-      delay(100);
-      digitalWrite(rollPin, LOW);
-
+  if (thing_type == "light") {
+    if (thing_serial == "0") {
+          client.publish("state", "{\"thing_type\":\"light\",\"thing_serial\":\"0\",\"response\":\"accepted\"}");
+          if (command == "on") digitalWrite(light0pin, HIGH);
+          if (command == "off") digitalWrite(light0pin, LOW);
+          Serial.print("Light 0 has been switched");
+    }
+    if (thing_serial == "1") {
+          client.publish("state", "{\"thing_type\":\"light\",\"thing_serial\":\"1\",\"response\":\"accepted\"}");
+          if (command == "on") digitalWrite(light1pin, HIGH);
+          if (command == "off") digitalWrite(light1pin, LOW);
+          Serial.print("Light 1 has been switched");
+    }
+    if (thing_serial == "2") {
+          client.publish("state", "{\"thing_type\":\"light\",\"thing_serial\":\"2\",\"response\":\"accepted\"}");
+          if (command == "on") digitalWrite(light2pin, HIGH);
+          if (command == "off") digitalWrite(light2pin, LOW);
+          Serial.print("Light 2 has been switched");
+    }
+    if (thing_serial == "3") {
+          client.publish("state", "{\"thing_type\":\"light\",\"thing_serial\":\"3\",\"response\":\"accepted\"}");
+          if (command == "on") digitalWrite(light3pin, HIGH);
+          if (command == "off") digitalWrite(light3pin, LOW);
+          Serial.print("Light 3 has been switched");
     }
   }
 }
@@ -171,10 +196,10 @@ void reconnect() {
   ESP.wdtDisable();
   while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
-    if (client.connect("fish")) {
+    if (client.connect("light_livingroom")) {
       Serial.println("connected");
       // Once connected, publish an announcement...
-      client.publish("state", "{\"thing_type\":\"fish\",\"thing_serial\":\"0\",\"state\":\"connected\"}");
+      client.publish("state", "{\"thing_type\":\"light_livingroom\",\"thing_serial\":\"na\",\"state\":\"connected\"}");
       // ... and resubscribe
       delay(10);
       client.subscribe("command");
