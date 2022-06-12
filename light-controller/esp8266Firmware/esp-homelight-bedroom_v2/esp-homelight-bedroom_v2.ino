@@ -1,7 +1,5 @@
-// Screen controller by Simon (parisot.simon -at- gmail)
-// made for ESP8266-12E, AWS IoT Core and a motorized home cinema screen!
-// based on the work of VeeriSubbuAmi (https://electronicsinnovation.com)
-// and various community libraries
+// Bedroom controller by Simon (parisot.simon -at- gmail)
+// made for NodeMCU and AWS IoT Core
 
 #include "FS.h"
 #include <ESP8266WiFi.h>
@@ -15,15 +13,11 @@ const char* ssid = "PrettyFlyForAWifi";
 const char* password = "123tagada";
 
 // pins of the relays
-const int rollPin = 13;
-const int unrollPin = 14;
+const int lightPin = 13;
+const int buttonPin = 14;
 
-// exact duration of rolling and unrolling of the screen
-const int rollDelay = 22000;
-const int unrollDelay = 19000;
-
-String state = "rolled";
-long startTimer = 0;
+int state = LOW;
+int buttonPreviousState = HIGH;
 
 // JSON parsing object in memory
 const size_t capacity = JSON_OBJECT_SIZE(3) + 60;
@@ -43,11 +37,10 @@ void setup() {
 
   Serial.begin(115200);
 
-  // initialize digital pin as an output for builtin led and the 2 relays
-  pinMode(rollPin, OUTPUT);
-  pinMode(unrollPin, OUTPUT);
-  digitalWrite(rollPin, LOW);
-  digitalWrite(unrollPin, LOW);
+  // initialize digital pin for the relay (light) and for for physical switch 
+  pinMode(buttonPin, INPUT);
+  pinMode(lightPin, OUTPUT);
+  digitalWrite(lightPin, LOW);
 
   setup_wifi();
   client.setServer(AWS_endpoint, 8883);
@@ -103,9 +96,27 @@ void loop() {
     reconnect();
   }
   client.loop();
+
+  if (digitalRead(buttonPin) != buttonPreviousState) { 
+    buttonPreviousState = digitalRead(buttonPin);
+    toggleRelay();
+    Serial.println("Command received from phhysical switch.");
+    delay(400);
+  }
 }
 
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Toggle relay (light) state
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+void toggleRelay(){
+  digitalWrite(relayPin, !relayState);
+  if (!relayState) {
+    client.publish(outTopic, "Relay is on");
+  }else{
+    client.publish(outTopic, "Relay is off");
+  }
+}
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -116,63 +127,39 @@ void callback(char* topic, byte* payload, unsigned int length) {
   String msg = String((char *)payload);
   deserializeJson(doc, msg);
 
-  String thing_type = doc["thing_type"]; // "screen"
+  String thing_type = doc["thing_type"]; // "light"
   String thing_serial = doc["thing_serial"]; // "0"
-  String command = doc["command"]; // "roll"
+  String command = doc["command"]; // "on" or "off"
 
   Serial.print("Message arrived on topic [");
   Serial.print(topic);
   Serial.println("] ");
   Serial.println(msg);
 
-  if (thing_type == "screen" && thing_serial == "0") // if this is a command for this thing
+  if (thing_type == "light" && thing_serial == "0") // if this is a command for this thing
   {
-    if (command == "unroll" && state == "rolled")
+    if (command == "on" && state == LOW)
     {
 
-      client.publish("state", "{\"thing_type\":\"screen\",\"thing_serial\":\"0\",\"response\":\"accepted\"}");
-      state = "busy";
-      digitalWrite(unrollPin, HIGH);
-      Serial.print("Screen is unrolling... ");
-
-      // wait for the screen to unroll, while maintaining the mqtt connection
-      startTimer = millis();
-      while (millis() - startTimer < unrollDelay) {
-        client.loop();
-      }
-
-      digitalWrite(unrollPin, LOW);
-      state = "unrolled";
+      digitalWrite(lightPin, HIGH);
+      state = HIGH;
       Serial.println("Done.");
+      client.publish("state", "{\"thing_type\":\"light\",\"thing_serial\":\"0\",\"response\":\"accepted\"}");
 
     }
-    else if (command == "roll" && state == "unrolled")
+    else if (command == "off" && state == HIGH)
     {
 
-      client.publish("state", "{\"thing_type\":\"screen\",\"thing_serial\":\"0\",\"response\":\"accepted\"}");
-      state = "busy";
-      digitalWrite(rollPin, HIGH);
-      Serial.print("Screen is rolling up... ");
-
-      // wait for the screen to roll up, while maintaining the mqtt connection
-      startTimer = millis();
-      while (millis() - startTimer < rollDelay) {
-        client.loop();
-      }
-
-      digitalWrite(rollPin, LOW);
-      state = "rolled";
+      digitalWrite(lightPin, LOW);
+      state = LOW;
       Serial.println("Done.");
-    }
-    else if (state == "busy")
-    {
-      client.publish("state", "{\"thing_type\":\"screen\",\"thing_serial\":\"0\",\"response\":\"busy\"}");
-      Serial.println("Screen is busy");
+      client.publish("state", "{\"thing_type\":\"light\",\"thing_serial\":\"0\",\"response\":\"accepted\"}");
+      
     }
     else
     {
-      client.publish("state", "{\"thing_type\":\"screen\",\"thing_serial\":\"0\",\"response\":\"nothing to do\"}");
-      Serial.println("Screen is already in this state");
+      client.publish("state", "{\"thing_type\":\"light\",\"thing_serial\":\"0\",\"response\":\"nothing to do\"}");
+      Serial.println("Light is already in this state");
     }
     Serial.println();
   }
@@ -222,11 +209,11 @@ void reconnect() {
     delay(10);
     Serial.print("Attempting MQTT connection...");
     ESP.wdtDisable();
-    if (client.connect("ESPthing")) {
+    if (client.connect("light_bedroom")) {
       ESP.wdtEnable(0);
       Serial.println("connected");
       // Once connected, publish an announcement...
-      client.publish("state", "{\"thing_type\":\"screen\",\"thing_serial\":\"0\",\"state\":\"connected\"}");
+      client.publish("state", "{\"thing_type\":\"light\",\"thing_serial\":\"0\",\"state\":\"connected\"}");
       // ... and resubscribe
       delay(10);
       client.subscribe("command");
